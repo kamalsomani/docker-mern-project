@@ -1,0 +1,20 @@
+### Check is server is on
+GET http://localhost:5000/
+
+###
+GET http://localhost:5000/api/movies
+
+###
+GET http://localhost:5000/api/movie/1 HTTP/1.1
+
+###
+POST http://localhost:5000/api/movie HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Test 1",
+    "rating": 8,
+    "time": ["9:00", "12:00" , "15:00" ]
+}
+
+###

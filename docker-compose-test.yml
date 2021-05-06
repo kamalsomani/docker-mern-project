@@ -1,0 +1,38 @@
+version: "3"
+services:
+  web-app:
+    image: list-app-dev
+    container_name: web-app
+    stdin_open: true
+    ports: 
+      - "3000:3000"
+    networks:
+      - list-app
+    volumes:
+      - ./client/:/usr/src/app
+   #   - /usr/src/app/node_modules
+  api-server:
+    image: api-server
+    container_name: api-server
+    env_file: ./server/config/dev.env
+    ports:
+      - "5000:5000"
+    networks:
+      - list-app
+    volumes:
+      - ./server/:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongo-db
+  mongo-db:
+    image: mongo:4.4-bionic
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    networks:
+      - list-app
+    volumes:
+      - ./data/db:/data/db            
+networks:
+  list-app:
+    driver: bridge

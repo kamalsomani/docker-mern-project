@@ -1,0 +1,1 @@
+https://github.com/sidpalas/devops-directive/tree/master/2020-12-27-productionize-mern
