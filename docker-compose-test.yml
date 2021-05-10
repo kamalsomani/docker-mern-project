@@ -17,10 +17,12 @@ services:
     env_file: ./server/config/dev.env
     ports:
       - "5000:5000"
+      - "9229:9229"
     networks:
       - list-app
     volumes:
       - ./server/:/usr/src/app
+      - ./server/nodemon.json:/usr/src/app/nodemon.json
       - /usr/src/app/node_modules
     depends_on:
       - mongo-db
@@ -32,7 +34,15 @@ services:
     networks:
       - list-app
     volumes:
-      - ./data/db:/data/db            
+      - mongo-data:/data/db
+      # - ./data/db:/data/db            
 networks:
   list-app:
     driver: bridge
+volumes: 
+  mongo-data:
+    driver: local
+    # driver_opts:
+    #   type: none
+    #   device: ${PWD}/data/db
+    #   o: bind

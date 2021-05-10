@@ -1,4 +1,6 @@
 const Movie = require('../models/movie-model')
+//Include ObjectId
+var ObjectId = require('mongodb').ObjectID;
 
 createMovie = (req, res) => {
     const body = req.body
@@ -26,7 +28,7 @@ createMovie = (req, res) => {
             })
         })
         .catch(error => {
-            return res.status(400).json({
+            return res.status(404).json({
                 error,
                 message: 'Movie not created!',
             })
@@ -72,9 +74,12 @@ updateMovie = async (req, res) => {
 }
 
 deleteMovie = async (req, res) => {
-    await Movie.findOneAndDelete({ _id: req.params.id }, (err, movie) => {
+    console.log("Request Delete:");
+    await Movie.findOneAndDelete({ _id: ObjectId(req.params.id) }, (err, movie) => {
+
+        console.log("Delete: ", err, movie);
         if (err) {
-            return res.status(400).json({ success: false, error: err })
+            return res.status(404).json({ success: false, error: err })
         }
 
         if (!movie) {
@@ -84,7 +89,10 @@ deleteMovie = async (req, res) => {
         }
 
         return res.status(200).json({ success: true, data: movie })
-    }).catch(err => console.log(err))
+    }).catch(err => {
+        console.log(err)
+        return res.status(500).json({ success: false, error: err })
+    })
 }
 
 getMovieById = async (req, res) => {
